@@ -1,0 +1,56 @@
+extends base
+
+block content
+  .col-md-12
+    // DATA TABLE
+    .table-data__tool
+      .table-data__tool-left
+        .overview-wrap
+          h2.title-1= title
+      .table-data__tool-right
+        a(href='/admin/ingredient-form')
+          button.au-btn.au-btn-icon.au-btn--green.au-btn--small
+            i.zmdi.zmdi-plus
+            | add item
+  .table-responsive.table-responsive-data2
+    table.table.table-data2
+      thead
+        tr
+          th No.
+          th name
+          th image
+          th description
+          th rating
+          th quantity
+          th price
+          th
+      tbody
+        each ingredient, index in ingredients
+          tr.tr-shadow
+            td= index + end + 1
+            td= ingredient.name
+            td
+              img(src=`${ingredient.imageUrl}` class="img-ingredient")
+            td= ingredient.description
+            td= ingredient.rating
+            td= ingredient.quantity
+            td= `$${ingredient.price}`
+            td
+              .table-data-feature
+                a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/ingredient-update/${ingredient._id}`)
+                  i.zmdi.zmdi-edit
+                form(action='/admin/ingredient-delete' method="post")
+                  input(type="hidden" value=`${ingredient._id}` name="id")
+                  button.item(data-toggle='tooltip' data-placement='top' title='Delete' type="submit")
+                    i.zmdi.zmdi-delete
+
+          tr.spacer
+  div.pagination
+    
+    if(prevPage > 0)
+      a(href=`/admin/?page=${prevPage}`)
+        i.fas.fa-chevron-left 
+        = prevPage
+    if(nextPage > 0)
+      a(href=`/admin/?page=${nextPage}`)= nextPage
+        i.fas.fa-chevron-right

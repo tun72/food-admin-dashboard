@@ -1,0 +1,39 @@
+extends base
+block content 
+    .row
+        .col-3.offset-8
+            a(href='/admin')
+              button.btn.bg-dark.text-white.my-3 List
+    .col-lg-6.offset-3
+        .card
+            .card-body 
+                .card-title
+                    h3.text-center.title-2= title
+                hr
+
+                form(action=`${isUpdate ? "/admin/ingredient-update" : "/admin/ingredient-form"}` method=`post` novalidate='novalidate')
+                    input(name="id" type="hidden"  value=`${isUpdate ? ingredient._id : ""}`) 
+                    .form-group
+                        label.control-label.mb-1(for='name') Ingredients Name
+                        input#name.form-control(name='name' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.name : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='price') Price
+                        input#price.form-control(name='price' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.price : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='imageUrl') Image Url
+                        input#imageUrl.form-control(name='imageUrl' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.imageUrl : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='rating') Rating
+                        input#rating.form-control(name='rating' type='number' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.rating : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='quantity') Quantity
+                        input#quantity.form-control(name='quantity' type='number' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.quantity : ""}` required)
+
+                    .form-group
+                        label.control-label.mb-1(for='description') Description
+                        input#description.form-control(name='description' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                    div
+                        button#payment-button.btn.btn-lg.btn-info.btn-block(type='submit')
+                            span#payment-button-amount Create
+                            span#payment-button-sending(style='display:none;') Sending&mldr;
+                            i.fa-solid.fa-circle-right
