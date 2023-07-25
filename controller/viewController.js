@@ -14,21 +14,33 @@ exports.getIngredientsForm = (req, res, next) => {
 
 // 2) POST
 exports.postIngredientsForm = async (req, res, next) => {
-  await Ingredient.create(req.body);
-  return res.status(200).redirect("/admin");
+  try {
+    await Ingredient.create(req.body);
+    return res.status(200).redirect("/admin");
+  } catch (err) {
+    return res.status(200).json({
+      message: "Something wrong",
+    });
+  }
 };
 
 // 3) Update
 exports.getUpdateIngredientsForm = async (req, res, next) => {
-  const id = req.params.id;
-  const ingredient = await Ingredient.findById(id);
-  const isUpdate = true;
+  try {
+    const id = req.params.id;
+    const ingredient = await Ingredient.findById(id);
+    const isUpdate = true;
 
-  return res.status(200).render("ingredientForm", {
-    ingredient,
-    isUpdate,
-    title: "Update Ingredients",
-  });
+    return res.status(200).render("ingredientForm", {
+      ingredient,
+      isUpdate,
+      title: "Update Ingredients",
+    });
+  } catch (err) {
+    return res.status(200).json({
+      message: "Something wrong",
+    });
+  }
 };
 
 // 4) Patch
@@ -55,7 +67,7 @@ exports.deleteIngredients = async (req, res, next) => {
 };
 
 exports.getIngredientsList = async (req, res, next) => {
-  const page = +req.query.page || 1 ;
+  const page = +req.query.page || 1;
   const limit = 10;
   const skip = (page - 1) * limit;
   const end = page * limit;
@@ -65,16 +77,27 @@ exports.getIngredientsList = async (req, res, next) => {
   const ingredients = await Ingredient.find().skip(skip).limit(limit);
 
   const title = "Ingredients List";
+  
   const total = await Ingredient.find().count();
+ 
+
 
   if (end < total) nextPage = page + 1;
-  if(page - 1 > 0) prevPage = page - 1;
+  if (page - 1 > 0) prevPage = page - 1;
 
   return res.status(200).render("ingredientList", {
     ingredients,
     title,
     nextPage,
     prevPage,
+    total,
     end: end - limit,
   });
 };
+
+
+// get login
+
+exports.getLoginForm = (req, res, next) => {
+  return res.status(200).render("login");
+}

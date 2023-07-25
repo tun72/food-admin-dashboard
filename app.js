@@ -1,25 +1,35 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require('path')
+const path = require("path");
 
 const ingredientRouter = require("./router/ingredientRouter");
 const viewRouter = require("./router/viewRouter");
-const bodyParser = require("body-parser")
+const authRouter = require("./router/authRouter");
+const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
+
+const dotenv = require("dotenv");
 const app = express();
 
-app.set('view engine', 'pug');
+dotenv.config({ path: "./config.env" });
 
-app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "pug");
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.set("views", path.join(__dirname, "views"));
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(cookieParser())
 
 app.use("/api/ingredients", ingredientRouter);
 app.use("/admin", viewRouter);
+app.use("/", authRouter);
 
 app.use(express.static(`${__dirname}/public`));
-
 
 mongoose
   .connect(

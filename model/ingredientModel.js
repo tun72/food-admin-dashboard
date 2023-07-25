@@ -26,8 +26,8 @@ const ingredientSchema = new mongoose.Schema({
       "An ingredients description name must have less than or equal than 100 characters",
     ],
     minlength: [
-      10,
-      "A ingredients description name must have greater than or equal than 20 characters",
+      5,
+      "A ingredients description name must have greater than or equal than 5 characters",
     ],
   },
   rating : {
@@ -44,11 +44,10 @@ const ingredientSchema = new mongoose.Schema({
   }
 });
 
-// ingredientSchema.virtual('total').get(async function () {
-//   const total = await this.find().count();
-//   console.log(this);
-//   return total;
-// });
+ingredientSchema.virtual('total').get(async function () {
+  
+  return count(this.name);
+});
 
 // ingredientSchema.pre(/^find/, async function (next) {
 //   // /^find/ all string start with find

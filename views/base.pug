@@ -4,9 +4,6 @@ html
     // Required meta tags
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    meta(name='description' content='au theme template')
-    meta(name='author' content='Hau Nguyen')
-    meta(name='keywords' content='au theme template')
     // Title Page
     title Dashboard
     // Fontfaces CSS
@@ -46,49 +43,47 @@ html
                     | Add New
 
         .page-container
-          //- header.header-desktop
-          //-   .section__content.section__content--p30
-          //-     .container-fluid
-          //-       .header-wrap                
-          //-           .account-wrap
-          //-             .account-item.clearfix.js-item-menu
-          //-               .image
-          //-                 img(src='images/icon/avatar-01.jpg' alt='John Doe')
-          //-               .content
-          //-                 a.js-acc-btn(href='#') Sithu
-          //-               .account-dropdown.js-dropdown
-          //-                 .info.clearfix
-          //-                   .image
-          //-                     a(href='#')
-          //-                       img(src='images/icon/avatar-01.jpg' alt='John Doe')
-          //-                   .content
-          //-                     h5.name
-          //-                       a(href='#') sithu
-          //-                     span.email sithu@example.com
-          //-                 .account-dropdown__body
-          //-                   .account-dropdown__item
-          //-                     a(href='#')
-          //-                       i.zmdi.zmdi-account
-          //-                       | Account
-          //-                 .account-dropdown__footer
-          //-                   a(href='#')
-          //-                     i.zmdi.zmdi-power
-          //-                     | Logout
+          header.header-desktop
+            .section__content.section__content--p30
+              .container-fluid
+                .header-wrap
+                    .noti-wrap           
+                    .account-wrap
+                      .account-item.clearfix.js-item-menu
+                        .image
+                          img(src='/images/admin.png' alt='John Doe')
+                        .content
+                          a.js-acc-btn(href='#')= user.name
+                        .account-dropdown.js-dropdown
+                          .info.clearfix
+                            .image
+                              a(href='#')
+                                img(src='/images/admin.png' alt='John Doe')
+                            .content
+                              h5.name
+                                a(href='#')=user.name
+                              span.email= user.email
+                          .account-dropdown__body
+                            .account-dropdown__item
+                              a(href='#')
+                                i.zmdi.zmdi-account
+                                | Account
+                          .account-dropdown__footer
+                            a(href='/logout')
+                              i.zmdi.zmdi-power
+                              | Logout
 
           .main-content
             .section__content.section__content--p30
               .container-fluid     
                 block content 
                   h1 hello world
-                // END DATA TABLE
-                // END MAIN CONTENT
-                // END PAGE CONTAINER
-                // Jquery JS
+
                 script(src='/vendor/jquery-3.2.1.min.js')
-                // Bootstrap JS
+
                 script(src='/vendor/bootstrap-4.1/popper.min.js')
                 script(src='/vendor/bootstrap-4.1/bootstrap.min.js')
-                // Vendor JS
+
                 script(src='/vendor/slick/slick.min.js')
                 script(src='/vendor/wow/wow.min.js')
                 script(src='/vendor/animsition/animsition.min.js')
@@ -99,6 +94,6 @@ html
                 script(src='/vendor/perfect-scrollbar/perfect-scrollbar.js')
                 script(src='/vendor/chartjs/Chart.bundle.min.js')
                 script(src='/vendor/select2/select2.min.js')
-                // Main JS
+
                 script(src='/js/main.js')
-                // end document
+
