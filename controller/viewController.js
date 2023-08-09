@@ -11,12 +11,20 @@ exports.getIngredientsForm = (req, res, next) => {
     isUpdate,
   });
 };
+const getFinalPage = async () => {
+  const total = await Ingredient.find().count();
+  return Math.ceil(total / 10);
 
+}
 // 2) POST
 exports.postIngredientsForm = async (req, res, next) => {
   try {
     await Ingredient.create(req.body);
-    return res.status(200).redirect("/admin");
+
+    const finalPage = await getFinalPage();
+
+
+    return res.status(200).redirect(`/admin?page=${finalPage}`);
   } catch (err) {
     return res.status(200).json({
       message: "Something wrong",
@@ -30,10 +38,11 @@ exports.getUpdateIngredientsForm = async (req, res, next) => {
     const id = req.params.id;
     const ingredient = await Ingredient.findById(id);
     const isUpdate = true;
-
+    const page = +req.query.page || 1;
     return res.status(200).render("ingredientForm", {
       ingredient,
       isUpdate,
+      page,
       title: "Update Ingredients",
     });
   } catch (err) {
@@ -46,17 +55,19 @@ exports.getUpdateIngredientsForm = async (req, res, next) => {
 // 4) Patch
 exports.patchUpdateIngredientsForm = async (req, res, next) => {
   const id = req.body.id;
-  const { name, price, imageUrl, rating, description, quantity } = req.body;
+  const { name, price, imageUrl, rating, description,category, quantity, page } = req.body;
   const ingredient = await Ingredient.findByIdAndUpdate(id, {
     name,
     price,
     imageUrl,
     rating,
     description,
+    category,
     quantity,
   });
   const isUpdate = true;
-  return res.status(200).redirect("/admin");
+  
+  return res.status(200).redirect(`/admin?page=${page}`);
 };
 
 // 5) Delete

@@ -38,6 +38,10 @@ const ingredientSchema = new mongoose.Schema({
     type: Number,
     required: [true, "An ingredients must have quantity."]
   },
+  category : {
+    type: String,
+    default: "null"
+  },
   price: {
     type: Number,
     required: [true, "An ingredient must have price."]

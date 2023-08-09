@@ -23,6 +23,7 @@ block content
           th description
           th rating
           th quantity
+          th category
           th price
           th
       tbody
@@ -34,11 +35,13 @@ block content
               img(src=`${ingredient.imageUrl}` class="img-ingredient")
             td= ingredient.description
             td= ingredient.rating
-            td= ingredient.quantity
+           
+            td= ingredient.quantity 
+            td= ingredient.category
             td= `$${ingredient.price}`
             td
               .table-data-feature
-                a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/ingredient-update/${ingredient._id}`)
+                a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/ingredient-update/${ingredient._id}/?page=${prevPage+1}`)
                   i.zmdi.zmdi-edit
                 form(action='/admin/ingredient-delete' method="post")
                   input(type="hidden" value=`${ingredient._id}` name="id")

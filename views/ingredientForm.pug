@@ -12,7 +12,8 @@ block content
                 hr
 
                 form(action=`${isUpdate ? "/admin/ingredient-update" : "/admin/ingredient-form"}` method=`post` novalidate='novalidate')
-                    input(name="id" type="hidden"  value=`${isUpdate ? ingredient._id : ""}`) 
+                    input(name="id" type="hidden"  value=`${isUpdate ? ingredient._id : ""}`)
+                    input(name="page" type="hidden"  value=`${page}`)
                     .form-group
                         label.control-label.mb-1(for='name') Ingredients Name
                         input#name.form-control(name='name' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.name : ""}` required)
@@ -25,6 +26,10 @@ block content
                     .form-group
                         label.control-label.mb-1(for='rating') Rating
                         input#rating.form-control(name='rating' type='number' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.rating : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='category') Category
+                        input#rating.form-control(name='category' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.category : ""}` required)
+
                     .form-group
                         label.control-label.mb-1(for='quantity') Quantity
                         input#quantity.form-control(name='quantity' type='number' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.quantity : ""}` required)
