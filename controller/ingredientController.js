@@ -4,36 +4,38 @@ const Shippng = require("../model/shippingModel");
 const User = require("../model/userModel");
 
 exports.getAllIngredients = async (req, res, next) => {
-  // const ingredients = await Ingredient.find().skip(30).limit(20);
-  // return res.status(200).json({
-  //   message: "success",
-  //   ingredients,
-  // });
-  const page = +req.query.page || 1;
-  const limit = 20;
-  const skip = (page - 1) * limit;
-  const end = page * limit;
-  let nextPage = 0;
-  let prevPage = 0;
+  try {
+    const page = +req.query.page || 1;
+    const limit = 16;
+    const skip = (page - 1) * limit;
+    const end = page * limit;
+    let nextPage = 0;
+    let prevPage = 0;
 
-  const ingredients = await Ingredient.find().skip(skip).limit(limit);
+    const ingredients = await Ingredient.find().skip(skip).limit(limit);
 
-  const title = "Ingredients List";
+    const title = "Ingredients List";
 
-  const total = await Ingredient.find().count();
+    const total = await Ingredient.find().count();
 
-  if (end < total) nextPage = page + 1;
-  if (page - 1 > 0) prevPage = page - 1;
+    if (end < total) nextPage = page + 1;
+    if (page - 1 > 0) prevPage = page - 1;
 
-  return res.status(200).json({
-    message: "success",
-    ingredients,
-    title,
-    nextPage,
-    prevPage,
-    total,
-    end: end - limit,
-  });
+    return res.status(200).json({
+      message: "success",
+      ingredients,
+      title,
+      nextPage,
+      prevPage,
+      total,
+      end: end - limit,
+    });
+  } catch (err) {
+    res.status(200).json({
+      message: "fail",
+      err,
+    });
+  }
 };
 
 exports.postIngredients = async (req, res, next) => {
