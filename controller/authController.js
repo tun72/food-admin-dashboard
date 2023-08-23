@@ -13,7 +13,6 @@ const signToken = (id) => {
 
 exports.signupUser = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { name, email, password, passwordConfirm } = req.body;
     const newUser = await User.create({
       name,
@@ -31,7 +30,6 @@ exports.signupUser = async (req, res, next) => {
       httpOnly: true,
     };
 
-    console.log(token);
 
     res.cookie("jwt", token, cookieOption);
 
@@ -73,8 +71,56 @@ exports.loginUser = async (req, res, next) => {
       httpOnly: true,
     };
 
-    res.user = user;
-    res.locals.user = user;
+    req.user = user;
+    req.locals.user = user;
+
+    res.cookie("jwt", token, cookieOption);
+
+    // res.status(200).redirect("/admin");
+    res.status(200).json({
+      message: "success",
+      token,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+exports.loginAdmin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user)
+      return res.status(500).json({
+        message: "Not Found",
+      });
+
+    if(user.role != "admin") {
+      return res.status(500).json({
+        message: "No Admin Account",
+      });
+    }
+
+    const check = await bcrypt.compare(password, user.password);
+
+    if (!check) return res.status(404).json({ message: "Password Wrong" });
+
+    const token = signToken(user._id);
+
+    const cookieOption = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    };
+
+    console.log("hello");
+
+    console.log(user);
+    req.user = user;
+    // req.locals.user = user;
 
     res.cookie("jwt", token, cookieOption);
 
@@ -83,6 +129,7 @@ exports.loginUser = async (req, res, next) => {
     console.log(err);
   }
 };
+
 
 exports.protect = async (req, res, next) => {
   let token;
@@ -93,19 +140,19 @@ exports.protect = async (req, res, next) => {
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
-      token = req.header.authorization.split(" ")[1];
+      token = req.headers.authorization.split(" ")[1];
     }
 
     if (!token) return res.status(500).redirect("/login");
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
     const user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(500).redirect("/login");
     }
+  
 
-    res.user = user;
+    req.user = user;
     res.locals.user = user;
     next();
   } catch (err) {

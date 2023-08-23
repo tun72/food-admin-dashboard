@@ -90,9 +90,8 @@ exports.getIngredientsList = async (req, res, next) => {
   const title = "Ingredients List";
   
   const total = await Ingredient.find().count();
+
  
-
-
   if (end < total) nextPage = page + 1;
   if (page - 1 > 0) prevPage = page - 1;
 

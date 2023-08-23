@@ -5,6 +5,8 @@ const path = require("path");
 const ingredientRouter = require("./router/ingredientRouter");
 const viewRouter = require("./router/viewRouter");
 const authRouter = require("./router/authRouter");
+const userRouter = require("./router/userRouter");
+
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser')
 
@@ -12,6 +14,13 @@ const dotenv = require("dotenv");
 const app = express();
 
 dotenv.config({ path: "./config.env" });
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+})
 
 app.set("view engine", "pug");
 
@@ -23,9 +32,12 @@ app.use(
   })
 );
 
+app.use(bodyParser.json())
+
 app.use(cookieParser())
 
 app.use("/api/ingredients", ingredientRouter);
+app.use("/api/user", userRouter);
 app.use("/admin", viewRouter);
 app.use("/", authRouter);
 
