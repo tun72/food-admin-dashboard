@@ -30,7 +30,6 @@ exports.signupUser = async (req, res, next) => {
       httpOnly: true,
     };
 
-
     res.cookie("jwt", token, cookieOption);
 
     res.user = newUser;
@@ -86,7 +85,6 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
-
 exports.loginAdmin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -97,7 +95,7 @@ exports.loginAdmin = async (req, res, next) => {
         message: "Not Found",
       });
 
-    if(user.role != "admin") {
+    if (user.role != "admin") {
       return res.status(500).json({
         message: "No Admin Account",
       });
@@ -120,8 +118,6 @@ exports.loginAdmin = async (req, res, next) => {
 
     console.log(user);
     req.user = user;
-    // req.locals.user = user;
-
     res.cookie("jwt", token, cookieOption);
 
     res.status(200).redirect("/admin");
@@ -129,7 +125,6 @@ exports.loginAdmin = async (req, res, next) => {
     console.log(err);
   }
 };
-
 
 exports.protect = async (req, res, next) => {
   let token;
@@ -150,7 +145,6 @@ exports.protect = async (req, res, next) => {
     if (!user) {
       return res.status(500).redirect("/login");
     }
-  
 
     req.user = user;
     res.locals.user = user;
