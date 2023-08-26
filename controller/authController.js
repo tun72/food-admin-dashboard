@@ -59,7 +59,7 @@ exports.loginUser = async (req, res, next) => {
 
     const check = await bcrypt.compare(password, user.password);
 
-    if (!check) return res.status(404).json({ message: "Password Wrong" });
+    if (!check) return res.status(500).json({ message: "Password Wrong", "status" : "fail" });
 
     const token = signToken(user._id);
 
@@ -71,7 +71,7 @@ exports.loginUser = async (req, res, next) => {
     };
 
     req.user = user;
-    req.locals.user = user;
+    // req.locals.user = user;
 
     res.cookie("jwt", token, cookieOption);
 
@@ -114,9 +114,6 @@ exports.loginAdmin = async (req, res, next) => {
       httpOnly: true,
     };
 
-    console.log("hello");
-
-    console.log(user);
     req.user = user;
     res.cookie("jwt", token, cookieOption);
 

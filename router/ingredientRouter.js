@@ -17,6 +17,11 @@ router
   .route("/add-to-cart")
   .get(authController.protect, ingredientController.getCart)
   .post(authController.protect, ingredientController.postCart);
+
+  router
+  .route("/delete-cart")
+  .post(authController.protect, ingredientController.deleteCart)
+  
 router.route("/get-history").get(authController.protect, ingredientController.getHistory);
 router.route("/check-by-name").post(authController.protect, ingredientController.getByNames)
 router

@@ -31,7 +31,7 @@ exports.getAllIngredients = async (req, res, next) => {
       end: end - limit,
     });
   } catch (err) {
-    res.status(200).json({
+    res.status(500).json({
       message: "fail",
       err,
     });
@@ -39,9 +39,16 @@ exports.getAllIngredients = async (req, res, next) => {
 };
 
 exports.postIngredients = async (req, res, next) => {
-  await Ingredient.create(req.body);
+  try {
+    await Ingredient.create(req.body);
 
-  return res.status(200).redirect("/admin");
+    return res.status(200).redirect("/admin");
+  } catch (err) {
+    res.status(500).json({
+      message: "fail",
+      err,
+    });
+  }
 };
 
 exports.getIngredientByID = async (req, res, next) => {
@@ -255,6 +262,23 @@ exports.getByNames = async (req, res, next) => {
     res.status(200).json({
       message: "fail",
       err,
+    });
+  }
+};
+
+exports.deleteCart = async (req, res, next) => {
+  try {
+    const id = req.body.id;
+    // console.log(id);
+
+    await Cart.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      message: "success",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "fail",
     });
   }
 };

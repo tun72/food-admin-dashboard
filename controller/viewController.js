@@ -20,10 +20,7 @@ const getFinalPage = async () => {
 exports.postIngredientsForm = async (req, res, next) => {
   try {
     await Ingredient.create(req.body);
-
     const finalPage = await getFinalPage();
-
-
     return res.status(200).redirect(`/admin?page=${finalPage}`);
   } catch (err) {
     return res.status(200).json({
