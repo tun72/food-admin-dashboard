@@ -1,4 +1,6 @@
 const express = require("express");
+
+const Shipping = require("./shippingModel");
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt')
 
@@ -54,6 +56,11 @@ userSchema.pre("save", async function(next) {
     this.passwordConfirm = null;
     next();
 })
+
+userSchema.pre('findOneAndDelete', { document: false, query: true }, async function() {
+  const doc = await this.model.findOne(this.getFilter());
+  await Shipping.deleteMany({ userId: doc._id });
+});
 // userSchema.virtual()
 
 const User = mongoose.model("user", userSchema);

@@ -1,0 +1,45 @@
+extends base
+
+block content
+    .col-md-12
+        // DATA TABLE
+        .table-data__tool
+            .table-data__tool-left
+                .overview-wrap
+                    h2.title-1= title
+            .table-data__tool-right
+
+        p.total= `Total User - ${total} `
+    .table-responsive.table-responsive-data2
+        table.table.table-data2
+            thead
+                tr
+                    th No.
+                    th name
+                    th email
+                    th phone
+                    th city
+                    th address
+                    th role
+                    th
+            tbody
+                each user, index in users
+                    tr.tr-shadow
+                        td= index  + 1
+                        td= user.name
+                        td= user.email
+                        td= user.phone || "Not Available"
+
+                        td= user.city || "Not Available"
+                        td= user.address ||  "Not Available"
+                        td= user.role
+                        td
+                            .table-data-feature
+                                a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/user-update/${user._id}`)
+                                    i.zmdi.zmdi-edit
+                                form(action='/admin/user-delete' method="post")
+                                    input(type="hidden" value=`${user._id}` name="id")
+                                    button.item(data-toggle='tooltip' data-placement='top' title='Delete' type="submit")
+                                        i.zmdi.zmdi-delete
+
+                    tr.spacer

@@ -37,41 +37,59 @@ html
                   a(href='/admin')
                     i.fas.fa-utensils
                     | Ingredients
+                
+                li
+                  a(href='/admin/meals')
+                    i.fas.fa-utensils
+
+                    | Recipes
                 li
                   a(href='/admin/ingredient-form')
                     i.fas.fa-plus
-                    | Add New
+                    | Add Ingredients
+                li
+                  a(href='/admin/meal-form')
+                    i.fas.fa-plus
+                    | Add Recipes
+                li
+                  a(href='/admin/users')
+                    i.fas.fa-user
+                    | Users
+                li
+                  a(href='/admin/orders')
+                    i.fas.fa-shopping-basket
+                    | Orders Data
 
         .page-container
           header.header-desktop
             .section__content.section__content--p30
               .container-fluid
                 .header-wrap
-                    .noti-wrap           
-                    .account-wrap
-                      .account-item.clearfix.js-item-menu
-                        .image
-                          img(src='/images/admin.png' alt='John Doe')
-                        .content
-                          a.js-acc-btn(href='#')= user.name
-                        .account-dropdown.js-dropdown
-                          .info.clearfix
-                            .image
-                              a(href='#')
-                                img(src='/images/admin.png' alt='John Doe')
-                            .content
-                              h5.name
-                                a(href='#')=user.name
-                              span.email= user.email
-                          .account-dropdown__body
-                            .account-dropdown__item
-                              a(href='#')
-                                i.zmdi.zmdi-account
-                                | Account
-                          .account-dropdown__footer
-                            a(href='/logout')
-                              i.zmdi.zmdi-power
-                              | Logout
+                  .noti-wrap           
+                  .account-wrap
+                    .account-item.clearfix.js-item-menu
+                      .image
+                        img(src='/images/admin.png' alt='John Doe')
+                      .content
+                        a.js-acc-btn(href='#')= user.name
+                      .account-dropdown.js-dropdown
+                        .info.clearfix
+                          .image
+                            a(href='#')
+                              img(src='/images/admin.png' alt='John Doe')
+                          .content
+                            h5.name
+                              a(href='#')=user.name
+                            span.email= user.email
+                        .account-dropdown__body
+                          .account-dropdown__item
+                            a(href='#')
+                              i.zmdi.zmdi-account
+                              | Account
+                        .account-dropdown__footer
+                          a(href='/logout')
+                            i.zmdi.zmdi-power
+                            | Logout
 
           .main-content
             .section__content.section__content--p30

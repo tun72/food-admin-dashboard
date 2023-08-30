@@ -1,0 +1,39 @@
+extends base
+block content 
+
+    .col-lg-6.offset-3
+        .card
+            .card-body 
+                .card-title
+                    h3.text-center.title-2= title
+                hr
+
+         
+                form(action=`/admin/user-update` method=`post` novalidate='novalidate')
+                    input(name="id" type="hidden"  value=`${user._id}`)
+                    .form-group
+                        label.control-label.mb-1(for='name') Name
+                        input#name.form-control(name='name' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${user.name}` required)
+                    .form-group
+                        label.control-label.mb-1(for='email') Email
+                        input#price.form-control(name='email' type='email' aria-required='true' aria-invalid='false' autocomplete="off" value=`${user.email}` required)
+                    .form-group
+                        label.control-label.mb-1(for='phone') Phone
+                        input#imageUrl.form-control(name='phone' type='tel' aria-required='true' aria-invalid='false' autocomplete="off" value=`${user.phone || null}` required)
+                    .form-group
+                        label.control-label.mb-1(for='address') Address
+                        input#rating.form-control(name='address' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${user.address || null}` required)
+                    .form-group
+                        label.control-label.mb-1(for='city') City
+                        input#rating.form-control(name='city' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${user.city || null}` required)
+
+                    .form-group
+                        label.control-label.mb-1(for='description') Role
+                        select#rating.form-control(name="role") 
+                            option(value=`user`) user
+                            option(value="admin") admin
+                    div
+                        button#payment-button.btn.btn-lg.btn-info.btn-block(type='submit')
+                            span#payment-button-amount Create
+                            span#payment-button-sending(style='display:none;') Sending&mldr;
+                            i.fa-solid.fa-circle-right

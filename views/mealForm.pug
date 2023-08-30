@@ -1,0 +1,167 @@
+extends base
+block content 
+    .row
+        .col-3.offset-9
+            a(href='/admin')
+                button.btn.bg-dark.text-white.my-3 List
+    .col-lg-8.offset-2
+        .card
+            .card-body 
+                .card-title
+                    h3.text-center.title-2= title
+                hr
+                form(action=`${isUpdate ? "/admin/meal-update" : "/admin/meal-form"}` method=`post` novalidate='novalidate')
+                    input(name="id" type="hidden"  value=`${isUpdate ? meal._id : ""}`)
+                    input(name="page" type="hidden"  value=`${page}`)
+                    .form-group
+                        label.control-label.mb-1(for='strMeal') Meal Name
+                        input#name.form-control(name='strMeal' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? meal.strMeal : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='strCategory') Category
+                        select#price.form-control(name="strCategory") 
+                            option(value="Breakfast") Breakfast
+                    .form-group
+                        label.control-label.mb-1(for='strInstructions') Instructions
+                        textarea#price.form-control(name="strInstructions" cols="15" rows="10") 
+                    .form-group
+                        label.control-label.mb-1(for='strMealThumb') Meal Image
+                        input#rating.form-control(name='strMealThumb' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.rating : ""}` required)
+                    .form-group
+                        label.control-label.mb-1(for='strTags') Meal Tags
+                        input#rating.form-control(name='strTags' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.category : ""}` required)
+
+                    .form-group
+                        label.control-label.mb-1(for='strYoutube') Meal Youtube
+                        input#quantity.form-control(name='strYoutube' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.quantity : ""}` required)
+
+                    //start
+                    .row
+                        .col-6
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient1') strIngredient1
+                                input#description.form-control(name='strIngredient1' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient2') strIngredient2
+                                input#description.form-control(name='strIngredient2' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient3') strIngredient3
+                                input#description.form-control(name='strIngredient3' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient4') strIngredient4
+                                input#description.form-control(name='strIngredient4' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient5') strIngredient5
+                                input#description.form-control(name='strIngredient5' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient6') strIngredient6
+                                input#description.form-control(name='strIngredient6' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredient7') strIngredien7
+                                input#description.form-control(name='strIngredien7' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien8') strIngredien8
+                                input#description.form-control(name='strIngredien8' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien9') strIngredien9
+                                input#description.form-control(name='strIngredien9' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien10') strIngredien10
+                                input#description.form-control(name='strIngredien10' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien11') strIngredien11
+                                input#description.form-control(name='strIngredien11' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien12') strIngredien12
+                                input#description.form-control(name='strIngredien12' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien13') strIngredien13
+                                input#description.form-control(name='strIngredien13' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien14') strIngredien14
+                                input#description.form-control(name='strIngredien14' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien15') strIngredien15
+                                input#description.form-control(name='strIngredien15' type='text' aria-required='true' aria-invalid='false' autocomplete="off")
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien16') strIngredien16
+                                input#description.form-control(name='strIngredien16' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien17') strIngredien17
+                                input#description.form-control(name='strIngredien17' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien18') strIngredien18
+                                input#description.form-control(name='strIngredien18' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien19') strIngredien19
+                                input#description.form-control(name='strIngredien19' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strIngredien20') strIngredien20
+                                input#description.form-control(name='strIngredien20' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                        .col-6 
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure1') strMeasure1
+                                input#description.form-control(name='strMeasure1' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure2') strMeasure2
+                                input#description.form-control(name='strMeasure2' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure3') strMeasure3
+                                input#description.form-control(name='strMeasure3' type='text' aria-required='true' aria-invalid='false' autocomplete="off")
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure4') strMeasure4
+                                input#description.form-control(name='strMeasure4' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure5') strMeasure5
+                                input#description.form-control(name='strMeasure5' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure6') strMeasure6
+                                input#description.form-control(name='strMeasure6' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure7') strMeasure7
+                                input#description.form-control(name='strMeasure7' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure8') strMeasure8
+                                input#description.form-control(name='strMeasure8' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure9') strMeasure9
+                                input#description.form-control(name='strMeasure9' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure10') strMeasure10
+                                input#description.form-control(name='strMeasure10' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure11') strMeasure11
+                                input#description.form-control(name='strMeasure11' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure12') strMeasure12
+                                input#description.form-control(name='strMeasure12' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure13') strMeasure13
+                                input#description.form-control(name='strMeasure13' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure14') strMeasure14
+                                input#description.form-control(name='strMeasure14' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure15') strMeasure15
+                                input#description.form-control(name='strMeasure15' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure16') strMeasure16
+                                input#description.form-control(name='strMeasure16' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure17') strMeasure17
+                                input#description.form-control(name='strMeasure17' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure18') strMeasure18
+                                input#description.form-control(name='strMeasure18' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure19') strMeasure19
+                                input#description.form-control(name='strMeasure19' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+                            .form-group
+                                label.control-label.mb-1(for='strMeasure20') strMeasure20
+                                input#description.form-control(name='strMeasure20' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.description : ""}` required)
+
+                    div
+                            button#payment-button.btn.btn-lg.btn-info.btn-block(type='submit')
+                                span#payment-button-amount Create
+                                span#payment-button-sending(style='display:none;') Sending&mldr;
+                                i.fa-solid.fa-circle-right    
