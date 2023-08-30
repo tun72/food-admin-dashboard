@@ -200,8 +200,57 @@ exports.postMealForm = async (req, res, next) => {
 };
 
 
+
+exports.getEditMealForm = async (req, res, next) => {
+  try {
+    const meal = await Meal.findById(req.params.id);
+
+
+    return res.status(200).render(`mealForm`, {
+      meal,
+      isUpdate : true,
+      title: "Update Meals",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      message: "Something wrong",
+    });
+  }
+};
+
+exports.postEditMealForm = async (req, res, next) => {
+  try {
+    const meals = await Meal.findByIdAndUpdate(req.body.id, req.body);
+
+    return res.status(200).redirect(`/admin/meals`);
+    
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      message: "Something wrong",
+    });
+  }
+};
+
+exports.deleteMeal = async (req, res, next) => {
+  try {
+    const meals = await Meal.findByIdAndDelete(req.body.id);
+
+    return res.status(200).redirect(`/admin/meals`);
+    
+  } catch (err) {
+    console.log(err);
+    return res.status(200).json({
+      message: "Something wrong",
+    });
+  }
+};
+
+
+
 exports.getOrderList = async (req, res, next) => {
-  
+
 }
 // get login
 

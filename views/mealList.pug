@@ -41,10 +41,10 @@ block content
                                 
                         td
                             .table-data-feature
-                                a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/user-update/${user._id}`)
+                                a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/meal-update/${meal._id}`)
                                     i.zmdi.zmdi-edit
-                                form(action='/admin/user-delete' method="post")
-                                    input(type="hidden" value=`${user._id}` name="id")
+                                form(action='/admin/meal-delete' method="post")
+                                    input(type="hidden" value=`${meal._id}` name="id")
                                     button.item(data-toggle='tooltip' data-placement='top' title='Delete' type="submit")
                                         i.zmdi.zmdi-delete
 
