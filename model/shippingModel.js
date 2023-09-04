@@ -26,6 +26,14 @@ const shippingSchema = new mongoose.Schema({
     required: [true, "Shippng must have ingredient"],
   },
 
+  status: {
+    type: String,
+    default: "Pending",
+  },
+  filePath: {
+    type: String,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

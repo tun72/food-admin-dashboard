@@ -54,12 +54,16 @@ exports.loginUser = async (req, res, next) => {
 
     if (!user)
       return res.status(500).json({
-        message: "Not Found",
+        message: "Email Wrong",
+        status: "fail",
       });
 
     const check = await bcrypt.compare(password, user.password);
 
-    if (!check) return res.status(500).json({ message: "Password Wrong", "status" : "fail" });
+    if (!check)
+      return res
+        .status(500)
+        .json({ message: "Password Wrong", status: "fail" });
 
     const token = signToken(user._id);
 
@@ -78,10 +82,14 @@ exports.loginUser = async (req, res, next) => {
     // res.status(200).redirect("/admin");
     res.status(200).json({
       message: "success",
+      status: "success",
       token,
     });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      message: "Something went Wrong 💥",
+      status: "fail",
+    });
   }
 };
 
@@ -119,7 +127,10 @@ exports.loginAdmin = async (req, res, next) => {
 
     res.status(200).redirect("/admin");
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      message: "Something went Wrong 💥",
+      status: "fail",
+    });
   }
 };
 
@@ -147,14 +158,24 @@ exports.protect = async (req, res, next) => {
     res.locals.user = user;
     next();
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      message: "Something went Wrong 💥",
+      status: "fail",
+    });
   }
 };
 
 exports.logOut = (req, res, next) => {
-  res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
-  res.status(200).redirect("/login");
+  try {
+    res.cookie("jwt", "loggedout", {
+      expires: new Date(Date.now() + 10 * 1000),
+      httpOnly: true,
+    });
+    res.status(200).redirect("/login");
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went Wrong 💥",
+      status: "fail",
+    });
+  }
 };

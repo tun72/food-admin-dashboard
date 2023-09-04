@@ -53,14 +53,16 @@ ingredientSchema.virtual('total').get(async function () {
   return count(this.name);
 });
 
-// ingredientSchema.pre(/^find/, async function (next) {
-//   // /^find/ all string start with find
-//   // this.find({ secretTour: { $ne: true } });
+ingredientSchema.post(/^find/, async function (next) {
+  // /^find/ all string start with find
+  // this.find({ secretTour: { $ne: true } });
 
-//   this.total = await this.find().count();
-//   console.log(this.total);
-//   next();
-// });
+  // this.total = await this.find().count();
+  // console.log(this.total);
+  // this.name = this.name.toLowerCase();
+  // console.log(this);
+  // next();
+});
 
 const Ingredient = mongoose.model('ingredient', ingredientSchema);
 

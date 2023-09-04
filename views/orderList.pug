@@ -1,0 +1,45 @@
+extends base
+
+block content
+    .col-md-12
+        // DATA TABLE
+        .table-data__tool
+            .table-data__tool-left
+                .overview-wrap
+                    h2.title-1= title
+            .table-data__tool-right
+
+        p.total= `Total Order - ${total} `
+    .table-responsive.table-responsive-data2
+        table.table.table-data2
+            thead
+                tr
+                    th No.
+                    th Order Id
+                    th name
+                    th area
+                    th total price
+                    th status
+                    th
+            tbody
+                each order, index in orders    
+                    tr.tr-shadow
+                        td= index  + 1
+                        td= order._id
+                           
+                        td= order.userId.name
+
+                        td= `${order.userId.city}`
+                        td=  `$${order.totalPrice}`
+
+                        td= order.status
+                        td
+                            .table-data-feature
+                                a.item(data-toggle='tooltip' data-placement='top' title='Success' href=`/admin/orders/success/${order._id}`)
+                                    i.zmdi.zmdi-check
+                                a.item(data-toggle='tooltip' data-placement='top' title='Fail' href=`/admin/orders/fail/${order._id}`)
+                                    i.zmdi.zmdi-close-circle
+                                a.item(data-toggle='tooltip' data-placement='top' title='Detail' href=`/docs/${order.filePath}` download)
+                                    i.zmdi.zmdi-eye
+                            
+                    tr.spacer

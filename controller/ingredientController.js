@@ -2,7 +2,7 @@ const Ingredient = require("../model/ingredientModel");
 const Cart = require("../model/cartModel");
 const Shippng = require("../model/shippingModel");
 const User = require("../model/userModel");
-
+const util = require("../util/createPdf")
 exports.getAllIngredients = async (req, res, next) => {
   try {
     const page = +req.query.page || 1;
@@ -69,40 +69,55 @@ exports.getIngredientByID = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       message: err,
+      status: "fail",
     });
   }
 };
 
 exports.getIngredientByName = async (req, res, next) => {
-  const name = req.params.name;
-  const ingredients = await Ingredient.find({
-    name: { $regex: name, $options: "i" },
-  });
+  try {
+    const name = req.params.name;
+    const ingredients = await Ingredient.find({
+      name: { $regex: name, $options: "i" },
+    });
 
-  res.status(200).json({
-    ingredients,
-  });
+    res.status(200).json({
+      ingredients,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err,
+      status: "fail",
+    });
+  }
 };
 
 exports.getIngredientCategory = async (req, res, next) => {
-  const name = req.query.name || null;
+  try {
+    const name = req.query.name || null;
 
-  if (!name) {
-    const category = await Ingredient.find()
-      .select({ category: 1, _id: 0 })
-      .distinct("category");
+    if (!name) {
+      const category = await Ingredient.find()
+        .select({ category: 1, _id: 0 })
+        .distinct("category");
 
+      return res.status(200).json({
+        message: "success",
+        category,
+      });
+    }
+
+    const ingredients = await Ingredient.find({ category: name });
     return res.status(200).json({
       message: "success",
-      category,
+      ingredients,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err,
+      status: "fail",
     });
   }
-
-  const ingredients = await Ingredient.find({ category: name });
-  return res.status(200).json({
-    message: "success",
-    ingredients,
-  });
 };
 
 exports.postCart = async (req, res, next) => {
@@ -146,7 +161,6 @@ exports.postCart = async (req, res, next) => {
       cart,
     });
   } catch (err) {
-    console.log(err);
     res.status(200).json({
       message: "fail",
       err,
@@ -155,7 +169,8 @@ exports.postCart = async (req, res, next) => {
 };
 
 exports.getCart = async (req, res, next) => {
-  const isTotal = req.query.total || null;
+  try {
+    const isTotal = req.query.total || null;
 
   const carts = await Cart.find({ userId: req.user }).populate("ingredient");
 
@@ -177,6 +192,12 @@ exports.getCart = async (req, res, next) => {
     message: "success",
     carts,
   });
+  } catch(err) {
+    res.status(200).json({
+      message: "fail",
+      err,
+    });
+  }
 };
 
 exports.postShipping = async (req, res, next) => {
@@ -204,15 +225,22 @@ exports.postShipping = async (req, res, next) => {
       zipcode: req.body.zip,
     });
 
-    const shipping = await Shippng.create({
+    let shipping = await Shippng.create({
       ingredients: shipArray,
       userId: req.user,
       payment: req.body.payment,
     });
 
+    let id = shipping._id
+
+    const path = await util.createPdf(shipping._id);
+
+    shipping = await  Shippng.findByIdAndUpdate(shipping._id, {filePath : path});
+
+
     res.status(200).json({
       message: "success",
-      shipping,
+      filePath: path,
     });
   } catch (err) {
     console.log(err);
@@ -240,7 +268,6 @@ exports.getHistory = async (req, res, next) => {
       shipping,
     });
   } catch (err) {
-    console.log(err);
     res.status(200).json({
       message: "fail",
       err,

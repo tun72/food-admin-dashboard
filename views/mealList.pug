@@ -15,30 +15,27 @@ block content
             thead
                 tr
                     th No.
-                    th name
                     th Meal Image
-                    th category
+                    th name
+
                     th area
                     th instruction
-                    th Meal Tags
                     th Ingredients
                     th
             tbody
                 each meal, index in meals    
                     tr.tr-shadow
                         td= index  + 1
-                        td= meal.strMeal
                         td
-                            img(src=`${meal.strMealThumb}`, alt="", style="{width: 100px !important}")
-                        td= meal.strCategory
+                            img(src=`${meal.strMealThumb}`  alt="" class="meal_image")
+                        td= meal.strMeal
+
                         td= meal.strArea 
-                        td= meal.strInstructions.slice(0,40)+ "..."
-                       
-                        td= meal.strTags
-                        td= meal.ingText
-                        td= meal.meaText
-                           
-                                
+                        td= meal.strInstructions.slice(0,40)+ "..." 
+
+                        td= `${meal.ingText}`
+
+
                         td
                             .table-data-feature
                                 a.item(data-toggle='tooltip' data-placement='top' title='Edit' href=`/admin/meal-update/${meal._id}`)

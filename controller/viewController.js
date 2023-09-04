@@ -1,6 +1,8 @@
 const Ingredient = require("../model/ingredientModel");
 const Meal = require("../model/mealsModel");
 const User = require("../model/userModel");
+const Shipping = require("../model/shippingModel");
+
 
 // Form
 
@@ -159,12 +161,12 @@ exports.mealList = async (req, res, next) => {
     let i = 1;
     let ingText = "";
     let meaText = "";
-    while (i != 20) {
-      ingText += (meal[`strIngredient${i}`] || '') + ",";
-      meaText += (meal[`strMeasure${i}`]  || '') + ",";
+    while (i != 4) {
+      ingText += (meal[`strIngredient${i}`] || "") + ",";
+      meaText += (meal[`strMeasure${i}`] || "") + ",";
       i++;
     }
-    meals[index].ingText = ingText + "\n" + meaText;
+    meals[index].ingText = ingText + "..." + "\n" + meaText + "...";
   });
 
   return res.status(200).render("mealList", {
@@ -185,10 +187,8 @@ exports.getMealForm = async (req, res, next) => {
 
 exports.postMealForm = async (req, res, next) => {
   try {
-
     console.log(req.body);
     const meals = await Meal.create(req.body);
-
 
     return res.status(200).redirect(`/admin/meals`);
   } catch (err) {
@@ -199,16 +199,13 @@ exports.postMealForm = async (req, res, next) => {
   }
 };
 
-
-
 exports.getEditMealForm = async (req, res, next) => {
   try {
     const meal = await Meal.findById(req.params.id);
 
-
     return res.status(200).render(`mealForm`, {
       meal,
-      isUpdate : true,
+      isUpdate: true,
       title: "Update Meals",
     });
   } catch (err) {
@@ -224,7 +221,6 @@ exports.postEditMealForm = async (req, res, next) => {
     const meals = await Meal.findByIdAndUpdate(req.body.id, req.body);
 
     return res.status(200).redirect(`/admin/meals`);
-    
   } catch (err) {
     console.log(err);
     return res.status(200).json({
@@ -238,7 +234,6 @@ exports.deleteMeal = async (req, res, next) => {
     const meals = await Meal.findByIdAndDelete(req.body.id);
 
     return res.status(200).redirect(`/admin/meals`);
-    
   } catch (err) {
     console.log(err);
     return res.status(200).json({
@@ -247,11 +242,43 @@ exports.deleteMeal = async (req, res, next) => {
   }
 };
 
-
-
 exports.getOrderList = async (req, res, next) => {
+  const shippings = await Shipping.find()
+    .populate("userId")
+    .populate("ingredients.ingredient");
 
-}
+  shippings.forEach((shipping, i) => {
+    let totalPrice = 5;
+    shipping.ingredients.forEach((ing) => {
+      totalPrice += ing.ingredient.price * ing.quantity;
+    });
+    shippings[i].totalPrice = Math.floor(totalPrice);
+  });
+
+  return res.status(200).render("orderList", {
+    orders: shippings,
+    total: shippings.length,
+  });
+};
+
+exports.successOrder = async (req, res, next) => {
+  const shipping = await Shipping.findByIdAndUpdate(req.params.id, {
+    status: "Success",
+  });
+
+
+  res.status(200).redirect("/admin/orders");
+};
+
+exports.failOrder = async (req, res, next) => {
+  const shipping = await Shipping.findByIdAndUpdate(req.params.id, {
+    status: "Fail",
+  });
+
+  res.status(200).redirect("/admin/orders");
+};
+
+
 // get login
 
 exports.getLoginForm = (req, res, next) => {

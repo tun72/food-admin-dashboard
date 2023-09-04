@@ -200,7 +200,16 @@ const mealSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  idMeal: {
+    type: String,
+  }
 });
+
+mealSchema.pre("find", async function(next) {
+  this.idMeal = this._id
+  console.log(this.idMeal);
+  next();
+})
 
 const meal = mongoose.model("meal", mealSchema);
 

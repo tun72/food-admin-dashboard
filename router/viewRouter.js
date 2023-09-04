@@ -66,9 +66,13 @@ router.post(
 
 router.route("/meals").get(authController.protect, viewController.mealList);
 
+router.route("/orders").get(authController.protect, viewController.getOrderList);
+router.route("/orders/success/:id").get(authController.protect, viewController.successOrder);
+router.route("/orders/fail/:id").get(authController.protect, viewController.failOrder);
 
+router.route("/orders/detail/:id").get(authController.protect, viewController.getOrderList);
 
-
+// router.route("/orders/pdf").get(viewController.createPdf);
 
 router.route("/login").get(viewController.getLoginForm);
 module.exports = router;
