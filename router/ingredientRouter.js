@@ -27,7 +27,7 @@ router
   .get(authController.protect, ingredientController.getHistory);
 router
   .route("/check-by-name")
-  .post(authController.protect, ingredientController.getByNames);
+  .post(ingredientController.getByNames);
 router
   .route("/:id")
   .get(ingredientController.getIngredientByID);

@@ -199,6 +199,7 @@ exports.postMealForm = async (req, res, next) => {
   }
 };
 
+
 exports.getEditMealForm = async (req, res, next) => {
   try {
     const meal = await Meal.findById(req.params.id);
@@ -219,7 +220,6 @@ exports.getEditMealForm = async (req, res, next) => {
 exports.postEditMealForm = async (req, res, next) => {
   try {
     const meals = await Meal.findByIdAndUpdate(req.body.id, req.body);
-
     return res.status(200).redirect(`/admin/meals`);
   } catch (err) {
     console.log(err);
@@ -232,7 +232,6 @@ exports.postEditMealForm = async (req, res, next) => {
 exports.deleteMeal = async (req, res, next) => {
   try {
     const meals = await Meal.findByIdAndDelete(req.body.id);
-
     return res.status(200).redirect(`/admin/meals`);
   } catch (err) {
     console.log(err);
@@ -266,7 +265,6 @@ exports.successOrder = async (req, res, next) => {
     status: "Success",
   });
 
-
   res.status(200).redirect("/admin/orders");
 };
 
@@ -274,13 +272,11 @@ exports.failOrder = async (req, res, next) => {
   const shipping = await Shipping.findByIdAndUpdate(req.params.id, {
     status: "Fail",
   });
-
   res.status(200).redirect("/admin/orders");
 };
 
 
 // get login
-
 exports.getLoginForm = (req, res, next) => {
   return res.status(200).render("login");
 };
