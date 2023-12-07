@@ -44,6 +44,7 @@ app.use("/api/recipes",mealRouter);
 app.use("/api/user", userRouter);
 app.use("/admin", viewRouter);
 app.use("/", authRouter);
+app.use(function(error, req, res, next){})
 
 app.use(express.static(`${__dirname}/public`));
 

@@ -2,21 +2,28 @@ const Ingredient = require("../model/ingredientModel");
 const Cart = require("../model/cartModel");
 const Shippng = require("../model/shippingModel");
 const User = require("../model/userModel");
-const util = require("../util/createPdf")
+const util = require("../util/createPdf");
 exports.getAllIngredients = async (req, res, next) => {
   try {
     const page = +req.query.page || 1;
+    const search = req.query.search || "";
     const limit = 16;
     const skip = (page - 1) * limit;
     const end = page * limit;
     let nextPage = 0;
     let prevPage = 0;
 
-    const ingredients = await Ingredient.find().skip(skip).limit(limit);
+    const ingredients = await Ingredient.find({
+      name: { $regex: search, $options: "i" },
+    })
+      .skip(skip)
+      .limit(limit);
 
     const title = "Ingredients List";
 
-    const total = await Ingredient.find().count();
+    const total = await Ingredient.find({
+      name: { $regex: search, $options: "i" },
+    }).count();
 
     if (end < total) nextPage = page + 1;
     if (page - 1 > 0) prevPage = page - 1;
@@ -172,27 +179,27 @@ exports.getCart = async (req, res, next) => {
   try {
     const isTotal = req.query.total || null;
 
-  const carts = await Cart.find({ userId: req.user }).populate("ingredient");
+    const carts = await Cart.find({ userId: req.user }).populate("ingredient");
 
-  let totalPrice = 0;
+    let totalPrice = 0;
 
-  let total = carts.length;
-  if (isTotal) {
-    carts.forEach((c, i) => {
-      totalPrice += c.ingredient.price * c.quantity;
-    });
+    let total = carts.length;
+    if (isTotal) {
+      carts.forEach((c, i) => {
+        totalPrice += c.ingredient.price * c.quantity;
+      });
 
-    return res.status(200).json({
+      return res.status(200).json({
+        message: "success",
+        total: totalPrice,
+        totalItem: total,
+      });
+    }
+    res.status(200).json({
       message: "success",
-      total: totalPrice,
-      totalItem: total,
+      carts,
     });
-  }
-  res.status(200).json({
-    message: "success",
-    carts,
-  });
-  } catch(err) {
+  } catch (err) {
     res.status(200).json({
       message: "fail",
       err,
@@ -231,12 +238,13 @@ exports.postShipping = async (req, res, next) => {
       payment: req.body.payment,
     });
 
-    let id = shipping._id
+    let id = shipping._id;
 
     const path = await util.createPdf(shipping._id);
 
-    shipping = await  Shippng.findByIdAndUpdate(shipping._id, {filePath : path});
-
+    shipping = await Shippng.findByIdAndUpdate(shipping._id, {
+      filePath: path,
+    });
 
     res.status(200).json({
       message: "success",

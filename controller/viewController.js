@@ -269,9 +269,7 @@ exports.successOrder = async (req, res, next) => {
 };
 
 exports.failOrder = async (req, res, next) => {
-  const shipping = await Shipping.findByIdAndUpdate(req.params.id, {
-    status: "Fail",
-  });
+  const shipping = await Shipping.findByIdAndDelete(req.params.id);
   res.status(200).redirect("/admin/orders");
 };
 
