@@ -7,6 +7,7 @@ exports.getAllIngredients = async (req, res, next) => {
   try {
     const page = +req.query.page || 1;
     const search = req.query.search || "";
+    const category = req.query.category || "";
     const limit = 16;
     const skip = (page - 1) * limit;
     const end = page * limit;
@@ -15,6 +16,7 @@ exports.getAllIngredients = async (req, res, next) => {
 
     const ingredients = await Ingredient.find({
       name: { $regex: search, $options: "i" },
+      category: { $regex: category },
     })
       .skip(skip)
       .limit(limit);
@@ -23,6 +25,7 @@ exports.getAllIngredients = async (req, res, next) => {
 
     const total = await Ingredient.find({
       name: { $regex: search, $options: "i" },
+      category: { $regex: category },
     }).count();
 
     if (end < total) nextPage = page + 1;
@@ -61,9 +64,18 @@ exports.postIngredients = async (req, res, next) => {
 exports.getIngredientByID = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const ingredient = (await Ingredient.findById(id)) || null;
+    const {
+      name,
+      price,
+      _id,
+      category,
+      description,
+      imageUrl,
+      rating,
+      quantity,
+    } = (await Ingredient.findById(id)) || null;
 
-    if (!ingredient) {
+    if (!name) {
       return res.status(500).json({
         message: "No Ingredient Found!",
       });
@@ -71,7 +83,14 @@ exports.getIngredientByID = async (req, res, next) => {
 
     return res.status(200).json({
       message: "success",
-      ingredient,
+      name,
+      price,
+      _id,
+      category,
+      description,
+      imageUrl,
+      rating,
+      quantity,
     });
   } catch (err) {
     return res.status(500).json({
