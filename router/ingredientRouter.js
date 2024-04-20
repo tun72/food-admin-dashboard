@@ -19,18 +19,19 @@ router
   .post(authController.protect, ingredientController.postCart);
 
 router
+  .route("/update-cart")
+  .post(authController.protect, ingredientController.patchCart);
+
+router
   .route("/delete-cart")
   .post(authController.protect, ingredientController.deleteCart);
 
 router
   .route("/get-history")
   .get(authController.protect, ingredientController.getHistory);
-router
-  .route("/check-by-name")
-  .post(ingredientController.getByNames);
-router
-  .route("/:id")
-  .get(ingredientController.getIngredientByID);
+router.route("/check-by-name").post(ingredientController.getByNames);
+router.route("/:id").get(ingredientController.getIngredientByID);
+
 router
   .route("/ingredient-by-name/:name")
   .get(ingredientController.getIngredientByName);

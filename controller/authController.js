@@ -145,8 +145,13 @@ exports.protect = async (req, res, next) => {
     ) {
       token = req.headers.authorization.split(" ")[1];
     }
+    
+    
 
     if (!token) return res.status(500).redirect("/login");
+
+    console.log(token + "  Dawdawdwd");
+    
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
 
@@ -159,7 +164,7 @@ exports.protect = async (req, res, next) => {
     next();
   } catch (err) {
     res.status(500).json({
-      message: "Something went Wrong 💥",
+      message: "Something went Wrong with token💥",
       status: "fail",
     });
   }

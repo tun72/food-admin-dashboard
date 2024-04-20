@@ -1,6 +1,6 @@
 const User = require("../model/userModel");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
 exports.getUser = async (req, res, next) => {
   try {
     const id = req.user._id;
@@ -21,12 +21,17 @@ exports.getUser = async (req, res, next) => {
 exports.postEditUser = async (req, res, next) => {
   try {
     const id = req.user._id;
+
+    
     const user = await User.findByIdAndUpdate(id, req.body);
+
+    console.log(user);
 
     res.status(200).json({
       user,
       message: "success",
     });
+    
   } catch (err) {
     res.status(500).json({
       err,
@@ -42,6 +47,9 @@ exports.postEdiPassword = async (req, res, next) => {
 
     const newPassword = req.body.newPassword;
     const confPassword = req.body.confPassword;
+
+    if (!newPassword || !confPassword || !password)
+      throw new Error("Password is null.");
 
     const user = await User.findById(id).select({ password: 1 });
 

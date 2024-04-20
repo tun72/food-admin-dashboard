@@ -3,7 +3,6 @@ const Meal = require("../model/mealsModel");
 const User = require("../model/userModel");
 const Shipping = require("../model/shippingModel");
 
-
 // Form
 
 // 1) GET
@@ -199,7 +198,6 @@ exports.postMealForm = async (req, res, next) => {
   }
 };
 
-
 exports.getEditMealForm = async (req, res, next) => {
   try {
     const meal = await Meal.findById(req.params.id);
@@ -242,16 +240,24 @@ exports.deleteMeal = async (req, res, next) => {
 };
 
 exports.getOrderList = async (req, res, next) => {
+ 
+
   const shippings = await Shipping.find()
     .populate("userId")
     .populate("ingredients.ingredient");
 
+  
+
+ 
+
   shippings.forEach((shipping, i) => {
     let totalPrice = 5;
     shipping.ingredients.forEach((ing) => {
+     
       totalPrice += ing.ingredient.price * ing.quantity;
     });
     shippings[i].totalPrice = Math.floor(totalPrice);
+    console.log(shipping);
   });
 
   return res.status(200).render("orderList", {
@@ -272,7 +278,6 @@ exports.failOrder = async (req, res, next) => {
   const shipping = await Shipping.findByIdAndDelete(req.params.id);
   res.status(200).redirect("/admin/orders");
 };
-
 
 // get login
 exports.getLoginForm = (req, res, next) => {

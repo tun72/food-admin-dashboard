@@ -75,6 +75,7 @@ exports.getIngredientByID = async (req, res, next) => {
       quantity,
     } = (await Ingredient.findById(id)) || null;
 
+    console.log(name);
     if (!name) {
       return res.status(500).json({
         message: "No Ingredient Found!",
@@ -194,6 +195,35 @@ exports.postCart = async (req, res, next) => {
   }
 };
 
+exports.patchCart = async (req, res, next) => {
+  try {
+    const id = req.body.id;
+    let quantity = req.body.quantity;
+    let cart;
+    const isAlready = await Cart.findOne({ ingredient: id });
+    if (isAlready && quantity) {
+      cart = await Cart.findByIdAndUpdate(isAlready._id, {
+        quantity,
+        userId: req.user,
+      });
+
+      return res.status(200).json({
+        message: "success",
+        cart,
+      });
+    }
+
+    res.status(200).json({
+      message: "success",
+      cart,
+    });
+  } catch (err) {
+    res.status(200).json({
+      message: "fail",
+      err,
+    });
+  }
+};
 exports.getCart = async (req, res, next) => {
   try {
     const isTotal = req.query.total || null;
@@ -240,7 +270,7 @@ exports.postShipping = async (req, res, next) => {
     });
 
     if (shipArray.length <= 0) {
-      return res.status(200).json({
+      return res.status(500).json({
         message: "fail",
         err,
       });
@@ -280,15 +310,34 @@ exports.postShipping = async (req, res, next) => {
 
 exports.getHistory = async (req, res, next) => {
   try {
-    const shipping = await Shippng.find({ userId: req.user.id })
+    const status  = req.query.status;
+
+    console.log(status);
+
+    let shipping = await Shippng.find({ userId: req.user.id })
       .populate("userId")
       .populate("ingredients.ingredient");
+
+      
+
+      
+
+    // if (status !== "null" && status !== "all") {
+    //   shipping = shipping.filter((shop) => {
+    //     return shop.status.toLowerCase() === status.toLowerCase();
+    //   });
+    // }
+
+    // console.log(shipping);
 
     if (!shipping) {
       return res.status(200).json({
         message: "Fail user not oredered!",
       });
     }
+
+    
+
 
     res.status(200).json({
       message: "success",
@@ -323,9 +372,17 @@ exports.getByNames = async (req, res, next) => {
 exports.deleteCart = async (req, res, next) => {
   try {
     const id = req.body.id;
-    // console.log(id);
+    const status = req.query.status;
 
-    await Cart.findByIdAndDelete(id);
+    if (status === "all") {
+      console.log(status);
+      await Cart.deleteMany({userId: req.userId});
+      return res.status(200).json({
+        message: "success",
+      });
+    }
+
+    const cart = await Cart.deleteOne({ ingredient: id });
 
     return res.status(200).json({
       message: "success",

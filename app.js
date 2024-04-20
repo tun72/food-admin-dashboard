@@ -18,7 +18,7 @@ dotenv.config({ path: "./config.env" });
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 })
@@ -44,7 +44,7 @@ app.use("/api/recipes",mealRouter);
 app.use("/api/user", userRouter);
 app.use("/admin", viewRouter);
 app.use("/", authRouter);
-app.use(function(error, req, res, next){})
+
 
 app.use(express.static(`${__dirname}/public`));
 
