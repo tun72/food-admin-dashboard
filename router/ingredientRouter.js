@@ -13,6 +13,7 @@ router
   .route("/add-to-shipping")
   .post(authController.protect, ingredientController.postShipping);
 
+router.route("/cart").get(authController.protect, ingredientController.getCart);
 router
   .route("/add-to-cart")
   .get(authController.protect, ingredientController.getCart)
