@@ -183,7 +183,7 @@ exports.postCart = async (req, res, next) => {
     }
 
     cart = await Cart.create({ ingredient: id, quantity, userId: req.user });
-    cart = cart.populate("ingredient")
+    cart = await cart.populate("ingredient");
 
     res.status(200).json({
       message: "success",
@@ -366,21 +366,25 @@ exports.getByNames = async (req, res, next) => {
 
 exports.deleteCart = async (req, res, next) => {
   try {
-    const id = req.body.id;
+    // const id = req.body.id;
+    const id = req.query.id;
     const status = req.query.status;
 
-    if (status === "all") {
-      console.log(status);
-      await Cart.deleteMany({ userId: req.userId });
+
+    if (!id) {
+      //status === "all" ||
+      await Cart.deleteMany({ userId: req.user._id });
       return res.status(200).json({
         message: "success",
       });
     }
-
     const cart = await Cart.deleteOne({ ingredient: id });
+
+    console.log(cart);
 
     return res.status(200).json({
       message: "success",
+      cart,
     });
   } catch (err) {
     return res.status(500).json({

@@ -23,13 +23,16 @@ router
   .route("/update-cart")
   .patch(authController.protect, ingredientController.patchCart);
 
-router
-  .route("/delete-cart")
-  .delete(authController.protect, ingredientController.deleteCart);
+router.delete(
+  "/delete-cart",
+  authController.protect,
+  ingredientController.deleteCart
+);
 
 router
   .route("/get-history")
   .get(authController.protect, ingredientController.getHistory);
+
 router.route("/check-by-name").post(ingredientController.getByNames);
 router.route("/:id").get(ingredientController.getIngredientByID);
 
