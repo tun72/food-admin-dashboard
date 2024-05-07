@@ -174,7 +174,8 @@ exports.postCart = async (req, res, next) => {
       cart = await Cart.findByIdAndUpdate(isAlready._id, {
         quantity,
         userId: req.user,
-      });
+      }).populate("ingredient");
+
       return res.status(200).json({
         message: "success",
         cart,
@@ -182,6 +183,7 @@ exports.postCart = async (req, res, next) => {
     }
 
     cart = await Cart.create({ ingredient: id, quantity, userId: req.user });
+    cart = cart.populate("ingredient")
 
     res.status(200).json({
       message: "success",
@@ -310,17 +312,13 @@ exports.postShipping = async (req, res, next) => {
 
 exports.getHistory = async (req, res, next) => {
   try {
-    const status  = req.query.status;
+    const status = req.query.status;
 
     console.log(status);
 
     let shipping = await Shippng.find({ userId: req.user.id })
       .populate("userId")
       .populate("ingredients.ingredient");
-
-      
-
-      
 
     // if (status !== "null" && status !== "all") {
     //   shipping = shipping.filter((shop) => {
@@ -335,9 +333,6 @@ exports.getHistory = async (req, res, next) => {
         message: "Fail user not oredered!",
       });
     }
-
-    
-
 
     res.status(200).json({
       message: "success",
@@ -376,7 +371,7 @@ exports.deleteCart = async (req, res, next) => {
 
     if (status === "all") {
       console.log(status);
-      await Cart.deleteMany({userId: req.userId});
+      await Cart.deleteMany({ userId: req.userId });
       return res.status(200).json({
         message: "success",
       });
