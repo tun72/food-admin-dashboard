@@ -151,8 +151,8 @@ exports.postCart = async (req, res, next) => {
   try {
     const id = req.body.id;
     const type = req.body.quantity || 1;
-    let quantity, cart;
 
+    let quantity, cart;
 
     quantity = type;
     const isAlready = await Cart.findOne({ ingredient: id });
@@ -182,22 +182,15 @@ exports.postCart = async (req, res, next) => {
       });
     }
 
-
-    cart = await Cart.create({
-      ingredient: id,
-      quantity,
-      userId: req.user,
-    });
-    cart = await cart.populate("ingredient")
-
-
+    cart = await Cart.create({ ingredient: id, quantity, userId: req.user });
+    cart = cart.populate("ingredient")
 
     res.status(200).json({
       message: "success",
       cart,
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(200).json({
       message: "fail",
       err,
     });
@@ -209,7 +202,6 @@ exports.patchCart = async (req, res, next) => {
     const id = req.body.id;
     let quantity = req.body.quantity;
     let cart;
-
     const isAlready = await Cart.findOne({ ingredient: id });
     if (isAlready && quantity) {
       cart = await Cart.findByIdAndUpdate(isAlready._id, {
@@ -228,7 +220,7 @@ exports.patchCart = async (req, res, next) => {
       cart,
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(200).json({
       message: "fail",
       err,
     });
