@@ -151,8 +151,8 @@ exports.postCart = async (req, res, next) => {
   try {
     const id = req.body.id;
     const type = req.body.quantity || 1;
-
     let quantity, cart;
+
 
     quantity = type;
     const isAlready = await Cart.findOne({ ingredient: id });
@@ -174,21 +174,30 @@ exports.postCart = async (req, res, next) => {
       cart = await Cart.findByIdAndUpdate(isAlready._id, {
         quantity,
         userId: req.user,
-      });
+      }).populate("ingredient");
+
       return res.status(200).json({
         message: "success",
         cart,
       });
     }
 
-    cart = await Cart.create({ ingredient: id, quantity, userId: req.user });
+
+    cart = await Cart.create({
+      ingredient: id,
+      quantity,
+      userId: req.user,
+    });
+    cart = await cart.populate("ingredient")
+
+
 
     res.status(200).json({
       message: "success",
       cart,
     });
   } catch (err) {
-    res.status(200).json({
+    res.status(500).json({
       message: "fail",
       err,
     });
@@ -200,6 +209,7 @@ exports.patchCart = async (req, res, next) => {
     const id = req.body.id;
     let quantity = req.body.quantity;
     let cart;
+
     const isAlready = await Cart.findOne({ ingredient: id });
     if (isAlready && quantity) {
       cart = await Cart.findByIdAndUpdate(isAlready._id, {
@@ -218,7 +228,7 @@ exports.patchCart = async (req, res, next) => {
       cart,
     });
   } catch (err) {
-    res.status(200).json({
+    res.status(500).json({
       message: "fail",
       err,
     });
@@ -310,17 +320,13 @@ exports.postShipping = async (req, res, next) => {
 
 exports.getHistory = async (req, res, next) => {
   try {
-    const status  = req.query.status;
+    const status = req.query.status;
 
     console.log(status);
 
     let shipping = await Shippng.find({ userId: req.user.id })
       .populate("userId")
       .populate("ingredients.ingredient");
-
-      
-
-      
 
     // if (status !== "null" && status !== "all") {
     //   shipping = shipping.filter((shop) => {
@@ -335,9 +341,6 @@ exports.getHistory = async (req, res, next) => {
         message: "Fail user not oredered!",
       });
     }
-
-    
-
 
     res.status(200).json({
       message: "success",
@@ -376,7 +379,7 @@ exports.deleteCart = async (req, res, next) => {
 
     if (status === "all") {
       console.log(status);
-      await Cart.deleteMany({userId: req.userId});
+      await Cart.deleteMany({ userId: req.userId });
       return res.status(200).json({
         message: "success",
       });
