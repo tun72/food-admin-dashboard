@@ -37,7 +37,7 @@ app.use(
 
 app.use(bodyParser.json())
 
-app.use(cookieParser())
+app.use(cookieParser()) 
 
 app.use("/api/ingredients", ingredientRouter);
 app.use("/api/recipes",mealRouter);

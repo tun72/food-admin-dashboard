@@ -21,11 +21,11 @@ router
 
 router
   .route("/update-cart")
-  .post(authController.protect, ingredientController.patchCart);
+  .patch(authController.protect, ingredientController.patchCart);
 
 router
   .route("/delete-cart")
-  .post(authController.protect, ingredientController.deleteCart);
+  .delete(authController.protect, ingredientController.deleteCart);
 
 router
   .route("/get-history")
