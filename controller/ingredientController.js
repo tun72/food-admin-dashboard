@@ -155,6 +155,7 @@ exports.postCart = async (req, res, next) => {
     let quantity, cart;
 
     quantity = type;
+
     const isAlready = await Cart.findOne({ ingredient: id });
 
     if (isAlready && quantity === 1) {
@@ -201,31 +202,38 @@ exports.patchCart = async (req, res, next) => {
   try {
     const id = req.body.id;
     let quantity = req.body.quantity;
-    let cart;
-    const isAlready = await Cart.findOne({ ingredient: id });
-    if (isAlready && quantity) {
-      cart = await Cart.findByIdAndUpdate(isAlready._id, {
-        quantity,
-        userId: req.user,
-      });
 
-      return res.status(200).json({
-        message: "success",
-        cart,
+    let cart = await Cart.findOne({ ingredient: id });
+
+    console.log(cart);
+
+    if (!cart) {
+      return res.status(500).json({
+        message: "ERROR cart id is wrong",
       });
     }
 
-    res.status(200).json({
+    if (quantity <= 0) {
+      cart = await Cart.findByIdAndDelete(cart._id);
+    } else {
+      cart = await Cart.findByIdAndUpdate(cart._id, {
+        quantity,
+        userId: req.user,
+      });
+    }
+
+    return res.status(200).json({
       message: "success",
       cart,
     });
   } catch (err) {
-    res.status(200).json({
+    res.status(500).json({
       message: "fail",
       err,
     });
   }
 };
+
 exports.getCart = async (req, res, next) => {
   try {
     const isTotal = req.query.total || null;
@@ -369,7 +377,6 @@ exports.deleteCart = async (req, res, next) => {
     // const id = req.body.id;
     const id = req.query.id;
     const status = req.query.status;
-
 
     if (!id) {
       //status === "all" ||
