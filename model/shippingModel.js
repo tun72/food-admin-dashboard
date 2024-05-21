@@ -28,7 +28,7 @@ const shippingSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    default: "Pending",
+    default: "pending",
   },
   filePath: {
     type: String,

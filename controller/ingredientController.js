@@ -320,19 +320,13 @@ exports.postShipping = async (req, res, next) => {
 
 exports.getHistory = async (req, res, next) => {
   try {
-    const status = req.query.status;
+    const status = req.query.status || null;
 
     console.log(status);
 
     let shipping = await Shippng.find({ userId: req.user.id })
       .populate("userId")
       .populate("ingredients.ingredient");
-
-    // if (status !== "null" && status !== "all") {
-    //   shipping = shipping.filter((shop) => {
-    //     return shop.status.toLowerCase() === status.toLowerCase();
-    //   });
-    // }
 
     // console.log(shipping);
 
@@ -341,6 +335,11 @@ exports.getHistory = async (req, res, next) => {
         message: "Fail user not oredered!",
       });
     }
+
+    if (status)
+      shipping = shipping.filter(
+        (shop) => shop.status.toLowerCase() === status.toLowerCase()
+      );
 
     res.status(200).json({
       message: "success",
