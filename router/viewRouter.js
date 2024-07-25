@@ -5,6 +5,8 @@ const router = express.Router();
 const { body } = require("express-validator");
 const handelErrorMessage = require("../middlewares/handelErrorMessage");
 
+// models
+const Ingredient = require("../model/ingredientModel");
 // ingredients
 router
   .route("/")
@@ -22,7 +24,15 @@ router
         .isLength({ min: 3, max: 40 })
         .withMessage(
           "Ingredients Name must be at least 3 and at most 40 characters long."
-        ),
+        )
+        .custom(async (value, { req }) => {
+          const isExist = await Ingredient.findOne({ name: value });
+
+          if (isExist) {
+            throw new Error("Name is already exist");
+          }
+          return true
+        }),
       body("description")
         .notEmpty()
         .isLength({ min: 5, max: 100 })

@@ -63,23 +63,23 @@ mongoose
     // useFindAndModify: true,
     useUnifiedTopology: true,
   })
-  .then((_) => {
-    return User.findOne({ email: "admin@gmail.com" })
-      .select("+password")
-      .then((user) => {
-        console.log(user);
-        if (!user) {
-          return User.create({
-            name: "admin",
-            email: "admin@gmail.com",
-            password: "admin123",
-            passwordConfirm: "admin123",
-            role: "admin",
-          });
-        }
-        return user;
-      });
-  })
+  // .then((_) => {
+  //   return User.findOne({ email: "admin@gmail.com" })
+  //     .select("+password")
+  //     .then((user) => {
+  //       console.log(user);
+  //       if (!user) {
+  //         return User.create({
+  //           name: "admin",
+  //           email: "admin@gmail.com",
+  //           password: "admin123",
+  //           passwordConfirm: "admin123",
+  //           role: "admin",
+  //         });
+  //       }
+  //       return user;
+  //     });
+  // })
   .then(() => {
     app.listen(port, () => {
       console.log("Server is running at port " + port);

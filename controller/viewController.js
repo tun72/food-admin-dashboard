@@ -248,15 +248,13 @@ exports.getOrderList = async (req, res, next) => {
     .populate("userId")
     .populate("ingredients.ingredient");
 
-  
-
- 
+  console.log(shippings);
 
   shippings.forEach((shipping, i) => {
     let totalPrice = 5;
     shipping.ingredients.forEach((ing) => {
-     
-      totalPrice += ing.ingredient.price * ing.quantity;
+      console.log(ing);
+      totalPrice += ing?.ingredient?.price || 0 * ing?.quantity || 0;
     });
     shippings[i].totalPrice = Math.floor(totalPrice);
     console.log(shipping);
