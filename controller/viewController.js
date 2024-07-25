@@ -18,6 +18,7 @@ const getFinalPage = async () => {
   const total = await Ingredient.find().count();
   return Math.ceil(total / 10);
 };
+
 // 2) POST
 exports.postIngredientsForm = async (req, res, next) => {
   try {
@@ -25,6 +26,7 @@ exports.postIngredientsForm = async (req, res, next) => {
     const finalPage = await getFinalPage();
     return res.status(200).redirect(`/admin?page=${finalPage}`);
   } catch (err) {
+    console.log(err);
     return res.status(200).json({
       message: "Something wrong",
     });
