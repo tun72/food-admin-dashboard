@@ -66,20 +66,26 @@ exports.patchUpdateIngredientsForm = async (req, res, next) => {
     quantity,
     page,
   } = req.body;
-  const ingredient = await Ingredient.findByIdAndUpdate(id, {
-    name,
-    price,
-    imageUrl,
-    rating,
-    description,
-    category,
-    quantity,
-  });
-  const isUpdate = true;
-
-  return res.status(200).redirect(`/admin?page=${page}`);
-};
-
+  try {
+    const ingredient = await Ingredient.findByIdAndUpdate(id, {
+      name,
+      price,
+      imageUrl,
+      rating,
+      description,
+      category,
+      quantity,
+    });
+    const isUpdate = true;
+  
+    return res.status(200).redirect(`/admin?page=${page}`);
+  }
+  catch(err) {
+    return res.render("ingredientForm", {
+      oldData: req.body,
+    });
+  }
+}
 // 5) Delete
 exports.deleteIngredients = async (req, res, next) => {
   const id = req.body.id;

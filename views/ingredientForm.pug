@@ -1,5 +1,18 @@
 extends base
 block content 
+    -
+        var foodCategories = [ "fruits", "vegetables", "grains", "dairy", 
+            "beverages",
+            "seafood",
+            "fish",
+            "rice",
+            "spice",
+            "bean",
+            "sauce",
+            "soups",
+            "oil",
+            "others",
+            "meat"];
     mixin error_msg(type)
         if message
             if message[type]
@@ -34,7 +47,10 @@ block content
                             +error_msg("rating")
                         .form-group
                             label.control-label.mb-1(for='category') Category
-                            input#rating.form-control(name='category' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.category : oldData  ? oldData.category : ""}` required)
+                            //- input#rating.form-control(name='category' type='text' aria-required='true' aria-invalid='false' autocomplete="off" value=`${isUpdate ? ingredient.category : oldData  ? oldData.category : ""}` required)
+                            select.form-control#foodCategorySelect(name="category")
+                                each category in foodCategories
+                                    option.form-control(value=category selected=(category === `${isUpdate ? ingredient.category : oldData  ? oldData.category : ""}`))= category
                             +error_msg("category")
                         .form-group
                             label.control-label.mb-1(for='quantity') Quantity

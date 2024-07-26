@@ -31,7 +31,7 @@ router
           if (isExist) {
             throw new Error("Name is already exist");
           }
-          return true
+          return true;
         }),
       body("description")
         .notEmpty()
@@ -56,6 +56,7 @@ router
         .notEmpty()
         .withMessage("ImageUrl is not valid."),
     ],
+
     handelErrorMessage,
     viewController.postIngredientsForm
   );
@@ -68,6 +69,38 @@ router.get(
 router.post(
   "/ingredient-update",
   authController.protect,
+  [
+    body("name")
+      .notEmpty()
+      .isString()
+      .isLength({ min: 3, max: 40 })
+      .withMessage(
+        "Ingredients Name must be at least 3 and at most 40 characters long."
+      ),
+    body("description")
+      .notEmpty()
+      .isLength({ min: 5, max: 100 })
+      .withMessage(
+        "Description must be at least 5 and at most 100 characters long."
+      ),
+    body("rating")
+      .notEmpty()
+      .isFloat({ min: 1.0, max: 5.0 })
+
+      .withMessage("Rating must be between 1 and 5"),
+    body("quantity")
+      .isNumeric()
+      .notEmpty()
+      .withMessage("Quantity must be Numeric."),
+    body("category").isString().withMessage("Category must be string."),
+    body("price").isNumeric().withMessage("Price must be Numeric."),
+    body("imageUrl")
+      .isString()
+      .isURL()
+      .notEmpty()
+      .withMessage("ImageUrl is not valid."),
+  ],
+  handelErrorMessage,
   viewController.patchUpdateIngredientsForm
 );
 router.post(
