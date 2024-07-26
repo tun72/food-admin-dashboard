@@ -2,7 +2,7 @@ const express = require("express");
 
 const Shipping = require("./shippingModel");
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   name: {

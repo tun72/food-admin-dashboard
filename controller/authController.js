@@ -33,7 +33,6 @@ exports.signupUser = async (req, res, next) => {
     res.cookie("jwt", token, cookieOption);
 
     res.user = newUser;
-    res.locals.user = newUser;
 
     res.status(200).json({
       message: "success",
@@ -44,6 +43,10 @@ exports.signupUser = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    res.status(500).json({
+      message: "Something went Wrong 💥",
+      status: "fail",
+    });
   }
 };
 
@@ -145,13 +148,11 @@ exports.protect = async (req, res, next) => {
     ) {
       token = req.headers.authorization.split(" ")[1];
     }
-    
-    
 
     if (!token) return res.status(500).redirect("/login");
 
     console.log(token + "  Dawdawdwd");
-    
+
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
 
